@@ -10,7 +10,7 @@ public class IsValidFilter implements Filter {
     @Override
     public List<Flight> doFilter(List<Flight> flights) {
         return flights.stream().filter(IsValidFilter::isFlightValid).toList();
-    } // проверка что все пары сегментов соотвествуют паттерну "раньше\позже" и тогда возвращаем список полетов
+    }
 
     /**
      * Method to determine if flight is valid: all segments are valid and no segments overlap
@@ -18,8 +18,7 @@ public class IsValidFilter implements Filter {
      * @return true if valid
      */
     private static boolean isFlightValid(Flight flight) {
-        // проверка шо вэлид - отлет раньше прилета (а с разными часовыми как быть тогда)
-        // потом сортируем что прилет раньше след. вылета (после пересадки), теоретически возможна ошибка при вводе, ок
+
         for (Segment segment : flight.getSegments()) {
             if (!isSegmentValid(segment)) {
                 return false;
