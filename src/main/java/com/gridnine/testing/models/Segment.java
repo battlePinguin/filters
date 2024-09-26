@@ -8,8 +8,8 @@ import java.util.Objects;
  * Bean that represents a flight segment.
  */
 public class Segment {
-    private final LocalDateTime departureDate;
 
+    private final LocalDateTime departureDate;
     private final LocalDateTime arrivalDate;
 
     Segment(final LocalDateTime dep, final LocalDateTime arr) {
@@ -28,8 +28,8 @@ public class Segment {
     @Override
     public String toString() {
         DateTimeFormatter fmt =
-                DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
         return '[' + departureDate.format(fmt) + '|' + arrivalDate.format(fmt)
-                + ']';
+            + ']';
     }
 }

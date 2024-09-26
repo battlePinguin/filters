@@ -14,6 +14,7 @@ public class IsValidFilter implements Filter {
 
     /**
      * Method to determine if flight is valid: all segments are valid and no segments overlap
+     *
      * @return true if valid
      */
     private static boolean isFlightValid(Flight flight) {
@@ -25,7 +26,7 @@ public class IsValidFilter implements Filter {
             }
         }
 
-        var segmentsSorted =FilterUtils.getSegmentsSorted(flight.getSegments());
+        var segmentsSorted = FilterUtils.getSegmentsSorted(flight.getSegments());
 
         for (int i = 0; i < segmentsSorted.size() - 1; i++) {
             if (segmentsSorted.get(i).getArrivalDate().isAfter(segmentsSorted.get(i + 1).getDepartureDate())) {
@@ -37,6 +38,7 @@ public class IsValidFilter implements Filter {
 
     /**
      * Method to determine if segment is valid: arrival is after departure
+     *
      * @return true if valid
      */
     private static boolean isSegmentValid(Segment segment) {

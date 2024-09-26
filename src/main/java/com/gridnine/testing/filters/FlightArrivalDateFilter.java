@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FlightArrivalDateFilter implements Filter {
+
     private final LocalDateTime time;
     private final DateFilteringTypes type;
 
@@ -47,6 +48,6 @@ public class FlightArrivalDateFilter implements Filter {
     private boolean isArrivingAtDay(List<Segment> segments) {
         var lastSegment = FilterUtils.getLastSegment(segments);
         return lastSegment.getArrivalDate().truncatedTo(ChronoUnit.DAYS)
-                        .isEqual(time.truncatedTo(ChronoUnit.DAYS));
+            .isEqual(time.truncatedTo(ChronoUnit.DAYS));
     }
 }

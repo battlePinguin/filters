@@ -49,6 +49,6 @@ public class FlightDepartureDateFilter implements Filter {
         var firstSegment = FilterUtils.getFirstSegment(segments);
 
         return firstSegment.getDepartureDate().truncatedTo(ChronoUnit.DAYS)
-                        .isEqual(time.truncatedTo(ChronoUnit.DAYS));
+            .isEqual(time.truncatedTo(ChronoUnit.DAYS));
     }
 }
