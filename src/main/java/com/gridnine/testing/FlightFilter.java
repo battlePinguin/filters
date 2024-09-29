@@ -1,45 +1,31 @@
 package com.gridnine.testing;
 
-import com.gridnine.testing.enums.DateFilteringTypes;
-import com.gridnine.testing.enums.DurationFilteringTypes;
 import com.gridnine.testing.filters.*;
+import com.gridnine.testing.models.Flight;
 import com.gridnine.testing.models.FlightBuilder;
-
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
+import com.gridnine.testing.utils.FilterUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Map;
 
+@Service
 public class FlightFilter {
 
-    public static void main(String[] args) {
-        FilterService service = new FilterService();
-        var flights = FlightBuilder.createFlights();
+    private final String[] FILTER_NAMES = new String[]{"DEPARTURE","JETLAG","TRANSFER"};
+    @Autowired
+    private Map<String, Filter> filters;
+    @Autowired
+    private FilterUtils filterUtils;
 
-        //Фильтр на валидные полеты (сегменты не летят "в прошлое", сегменты не пересекаются)
-        Filter filterValid = new IsValidFilter();
-        //фильтр на полеты от текущей даты
-        Filter filterFromNow = new FlightDepartureDateFilter(LocalDateTime.now(), DateFilteringTypes.AFTER);
-        //Фильтр на время на земле
-        Filter filterLessThan2HoursOnGround = new TransferTimeFilter(Duration.of(2, ChronoUnit.HOURS), DurationFilteringTypes.LESS);
+    public void processFlights() {
+        List<Flight> flights = FlightBuilder.createFlights();
 
-        //Выборка полетов по вышеупомянутым фильтрам
-        var resultValid = service.FilterFlights(flights, filterValid);
-        System.out.println("Валидные рейсы:");
-        printListLineByLine(resultValid);
+        for (int i = 0; i < filters.size(); i++) {
+            List<Flight> depature = filterUtils.filterFlights(flights, filters.get(FILTER_NAMES[i]));
 
-        var resultFromNow = service.FilterFlights(flights, filterFromNow);
-        System.out.println("Рейсы от сегодняшнего числа:");
-        printListLineByLine(resultFromNow);
-
-        var resultLessThan2HoursOnGround = service.FilterFlights(flights, filterLessThan2HoursOnGround);
-        System.out.println("Рейсы с пересадкой менее двух часов:");
-        printListLineByLine(resultLessThan2HoursOnGround);
-    }
-
-    private static void printListLineByLine(List list) {
-        for(var e : list) {
-            System.out.println(e);
+            filterUtils.printFilteredFlights(depature, filters.get(FILTER_NAMES[i]).getType()
+                + " - " + filters.get(FILTER_NAMES[i]).getTime());
         }
     }
 }
