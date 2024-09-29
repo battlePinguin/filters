@@ -43,10 +43,8 @@ public class TransferTimeFilter implements Filter<String> {
 
     @Override
     public String getTime() {
-        return duration.toString() + """
-            \n    Формат строкового представления объекта Duration использует стандарт ISO-8601. Он выглядит, например, как:
-                PT: Префикс для обозначения временного периода (Period of Time).
-                3H: Указывает, что период составляет 3 часа (H — это аббревиатура для Hours).
-            """;
+        return duration.toString() + "\n    Формат строкового представления объекта Duration использует стандарт ISO-8601: \n" +
+            "       PT: Префикс для обозначения временного периода (Period of Time). \n" +
+            "       3H: Указывает, что период составляет 3 часа (H — это аббревиатура для Hours).";
     }
 }

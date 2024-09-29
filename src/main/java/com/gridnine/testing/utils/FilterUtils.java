@@ -6,6 +6,7 @@ import com.gridnine.testing.models.Segment;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -31,7 +32,6 @@ public class FilterUtils {
      * @throws IllegalStateException если один из фильтров вернул null
      */
     public List<Flight> filterFlights(List<Flight> flights, Filter... filters ) {
-
         if (flights == null || filters == null) {
             throw new IllegalArgumentException("Список рейсов и массив фильтров не могут быть null");
         }
@@ -80,10 +80,18 @@ public class FilterUtils {
 
         return getSegmentsSorted(segments).stream()
             .limit(segments.size() - 1)
-            .map(segment -> Duration.between(
-                segment.getArrivalDate(),
-                segments.get(segments.indexOf(segment) + 1).getDepartureDate()))
-            .reduce(Duration.ZERO, Duration::plus);
+            .map(segment -> {
+                LocalDateTime arrival = segment.getArrivalDate();
+                LocalDateTime nextDeparture = segments.get(segments.indexOf(segment) + 1).getDepartureDate();
+
+                if (arrival == null || nextDeparture == null) {
+                    return Duration.ZERO;
+                }
+
+                return Duration.between(arrival, nextDeparture);
+            })
+            .reduce(Duration.ZERO, (duration1, duration2) -> duration1.plus(duration2));
+
     }
 
     /**

@@ -1,4 +1,4 @@
-package com.gridnine.testing;
+package com.gridnine.testing.service;
 
 import com.gridnine.testing.filters.*;
 import com.gridnine.testing.models.Flight;
@@ -23,7 +23,6 @@ public class FlightFilter {
 
         for (int i = 0; i < filters.size(); i++) {
             List<Flight> depature = filterUtils.filterFlights(flights, filters.get(FILTER_NAMES[i]));
-
             filterUtils.printFilteredFlights(depature, filters.get(FILTER_NAMES[i]).getType()
                 + " - " + filters.get(FILTER_NAMES[i]).getTime());
         }
